@@ -1,0 +1,9 @@
+com\wipro\orderms\dto\Payment.class
+com\wipro\orderms\service\PaymentConnectService.class
+com\wipro\orderms\OrderApplication.class
+com\wipro\orderms\service\OrderService.class
+com\wipro\orderms\AppConfig.class
+com\wipro\orderms\service\impl\OrderServiceImpl.class
+com\wipro\orderms\entity\Order.class
+com\wipro\orderms\repo\OrderRepository.class
+com\wipro\orderms\controller\OrderController.class
