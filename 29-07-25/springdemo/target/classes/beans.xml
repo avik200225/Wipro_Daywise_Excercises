@@ -1,0 +1,50 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  
+    <bean id="department" class="com.wipro.springdemo.beans.Department">
+        <constructor-arg value="CSE"/>
+        <constructor-arg value="Computer Science"/>
+    </bean>
+
+    <!-- College bean with constructor injection -->
+    <bean id="college" class="com.wipro.springdemo.beans.College">
+        <constructor-arg value="IIT"/>
+        <constructor-arg ref="department"/>
+    </bean>
+
+</beans>
+  
+  <!-- 
+     Department Bean with default values 
+    <bean id="department" class="com.wipro.springdemo.beans.Department">
+        <property name="deptCode" value="CS"/>
+        <property name="deptName" value="Computer Science"/>
+    </bean>
+    
+
+ 
+     College Bean using property-based DI 
+    <bean id="college" class="com.wipro.springdemo.beans.College">
+        <property name="cllgName" value="IIT"/>
+        <property name="department" ref="department"/>
+    </bean>
+     </beans> 
+ 
+       Department bean using constructor
+        <bean id="department" class="com.wipro.springdemo.beans.Department">
+        <constructor-arg value="Computer Science"/>
+        <constructor-arg value="D02"/>
+    </bean>
+
+    College bean using constructor injection
+    <bean id="college" class="com.wipro.springdemo.beans.College">
+        <constructor-arg value="NIT"/>
+        <constructor-arg ref="department"/>
+    </bean>
+    -->
+
+
