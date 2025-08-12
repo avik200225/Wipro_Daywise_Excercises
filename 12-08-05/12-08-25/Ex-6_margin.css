@@ -1,0 +1,17 @@
+.container{
+    border: 2px solid black;
+}
+.class1 {
+    color: rgb(47, 245, 32);
+    font-weight: bold;
+    background-color: teal;
+    margin-top: 50px;
+    margin-left: 250px;
+}
+
+
+.class2 {
+    background-color: tomato;
+    margin-left: 50px; 
+    margin-top: 160px;
+}

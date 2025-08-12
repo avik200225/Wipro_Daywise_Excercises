@@ -1,0 +1,135 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #ffffff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header */
+.header {
+    background: #1f1f1f;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Hero Section */
+.hero {
+    background: url('https://images.pexels.com/photos/775201/pexels-photo-775201.jpeg') center/cover no-repeat;
+    color: white;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+}
+
+.meta {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Main Container */
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Content */
+.intro {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.content img {
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+/* CTA Button */
+.cta {
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+}
+
+.cta:hover {
+    background: #0056b3;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.about img {
+    width: 100px;
+    border-radius: 50%;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.social a {
+    display: inline-block;
+    margin-right: 0.5rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.recent-posts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recent-posts li {
+    margin-bottom: 0.5rem;
+}
+
+.recent-posts a {
+    color: #333;
+    text-decoration: none;
+}
+
+/* Footer */
+.footer {
+    background: #1f1f1f;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+.footer .social a {
+    color: white;
+    margin-left: 0.5rem;
+}
+

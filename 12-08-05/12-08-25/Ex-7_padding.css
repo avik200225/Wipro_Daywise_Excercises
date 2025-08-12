@@ -1,0 +1,18 @@
+.pad{
+ 
+padding: 200px 50px 100px 50px;
+}
+ 
+ 
+ 
+.brdr{
+ 
+    border: 5px solid rgb(159, 186, 8);
+ 
+}  
+ 
+.mrgn{
+ 
+    margin: 100px 20px 30px 40px; /* top right bottom left */
+}
+ 

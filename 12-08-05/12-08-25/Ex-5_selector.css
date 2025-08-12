@@ -1,0 +1,23 @@
+* {
+    color: blue;
+    font-size: 18px;
+    border: 1px solid gray;
+}
+
+
+p, h1 {
+    color: rgb(50, 232, 38);
+    background-color: lightyellow;
+}
+
+.highlight {
+    color: rgb(252, 237, 37);
+    background-color: lightblue;
+    font-size: 42px;
+}
+
+#special {
+    color: rgb(241, 32, 32);
+    background-color: lightpink;
+    font-size: 22px;
+}
