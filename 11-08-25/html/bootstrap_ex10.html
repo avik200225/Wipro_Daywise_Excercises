@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ex10 - Bootstrap Layout</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background: #69bdf1; }
+    .hero { background: linear-gradient(180deg, #f7fbfa 0%, #eef2ef 100%); border-radius: 18px; padding: 36px; }
+    .card-rounded { border-radius: 14px; }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; }
+    .color-dot { width: 28px; height: 28px; border-radius: 50%; display:inline-block; margin-right:8px; }
+    .shadow-soft { box-shadow: 0 6px 18px rgba(22,28,45,0.06); }
+    .btn-pill { border-radius: 999px; }
+    .thumb-small img { width:60px; height:60px; object-fit:cover; border-radius:10px; }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <h4 class="mb-0">nitec.</h4>
+        <form class="d-flex" role="search">
+          <input class="form-control" type="search" placeholder="Search products..." aria-label="Search">
+        </form>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-outline-secondary btn-sm">❤</button>
+        <div class="avatar shadow-soft" style="background:#ccc;"></div>
+        <small>Ryman Alex</small>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="hero shadow-soft">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <small class="text-muted">Music is Classic</small>
+              <h1 class="display-6">Listening to Music makes a person calm.</h1>
+              <p class="text-muted">Clear Sounds<br>Making your dream music come true — stay with Sequios Sounds!</p>
+              <a class="btn btn-success btn-pill px-4" href="#">View All Products</a>
+              <div class="mt-4 d-flex gap-3 align-items-center">
+                <small class="text-muted">Follow us on:</small>
+                <div class="d-flex gap-2">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" width="22" alt="Instagram">
+                </div>
+              </div>
+            </div>
+              <div class="col-md-6 text-center">
+                <img src="https://images.pexels.com/photos/983831/pexels-photo-983831.jpeg" class="img-fluid" alt="Apple Earpods">
+              </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 g-3">
+          <div class="col-md-4">
+            <div class="card card-rounded p-3 shadow-soft">
+              <h6 class="mb-1">More Products</h6>
+              <small class="text-muted">460 plus items.</small>
+              <div class="d-flex gap-2 mt-3 thumb-small">
+                <img src="https://images.pexels.com/photos/577769/pexels-photo-577769.jpeg" alt="">
+                <img src="https://images.pexels.com/photos/983831/pexels-photo-983831.jpeg" alt="">
+                <img src="https://images.pexels.com/photos/8000624/pexels-photo-8000624.jpeg" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-rounded p-3 shadow-soft text-center">
+              <div class="mb-2">👥</div>
+              <h5 class="mb-0">5m+</h5>
+              <small class="text-muted">Downloads</small>
+              <div class="mt-2"><small>★ 4.6 reviews</small></div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-rounded p-3 shadow-soft">
+              <h6 class="mb-1">Listening Has Been Released</h6>
+              <div class="d-flex align-items-center gap-3">
+                <img src="https://images.pexels.com/photos/5877660/pexels-photo-5877660.jpeg" width="68" style="border-radius:10px;" alt="">
+                <div>
+                  <small class="text-muted">Popular</small>
+                  <p class="mb-0">New audio gadget — compact and powerful.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card card-rounded p-3 shadow-soft mb-3">
+          <h6 class="mb-2">Popular Colors</h6>
+          <div class="d-flex align-items-center">
+            <span class="color-dot" style="background:#2b6be6;"></span>
+            <span class="color-dot" style="background:#ffb020;"></span>
+            <span class="color-dot" style="background:#00c38a;"></span>
+            <span class="color-dot" style="background:#ff5864;"></span>
+            <span class="color-dot" style="background:#82f0ff;"></span>
+          </div>
+        </div>
+<div class="card card-rounded p-0 overflow-hidden shadow-soft mb-3">
+  <img src="https://images.pexels.com/photos/144429/pexels-photo-144429.jpeg" class="img-fluid" alt="Close-up Microphone">
+  <div class="p-3">
+    <h6 class="mb-0">Close-up Microphone</h6>
+  </div>
+</div>
+
+        <div class="card card-rounded p-0 overflow-hidden shadow-soft">
+          <img src="https://images.pexels.com/photos/577769/pexels-photo-577769.jpeg" class="img-fluid" alt="VR Headphone">
+          <div class="p-3">
+            <h6 class="mb-0">Light Grey Surface Headphone</h6>
+            <small class="text-muted">Boosted with bass</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
