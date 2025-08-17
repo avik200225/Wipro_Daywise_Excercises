@@ -1,0 +1,39 @@
+{
+  "departments": [
+    {
+      "deptName": "Engineering"
+    },
+    {
+      "deptName": "HR"
+    },
+    {
+      "deptName": "Sales"
+    }
+  ],
+  "employees": [
+    {
+      "name": "Aarav Sen",
+      "contractType": "Full-Time",
+      "address": "Kolkata",
+      "department": {
+        "id": 1
+      }
+    },
+    {
+      "name": "Meera Rao",
+      "contractType": "Contract",
+      "address": "Mumbai",
+      "department": {
+        "id": 2
+      }
+    },
+    {
+      "name": "Rohan Das",
+      "contractType": "Intern",
+      "address": "Pune",
+      "department": {
+        "id": 1
+      }
+    }
+  ]
+}

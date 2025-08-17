@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employees</title>
+</head>
+<body>
+<h2>Employees</h2>
+
+<form th:action="@{/employees}" method="post" th:object="${employee}">
+    Name: <input type="text" th:field="*{name}"/>
+    Contract Type: <input type="text" th:field="*{contractType}"/>
+    Address: <input type="text" th:field="*{address}"/>
+    Department: <select th:field="*{department.id}">
+        <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.deptName}"></option>
+    </select>
+    <button type="submit">Add</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>ID</th><th>Name</th><th>Contract</th><th>Address</th><th>Department</th><th>Actions</th>
+    </tr>
+    <tr th:each="emp : ${employees}">
+        <td th:text="${emp.id}"></td>
+        <td th:text="${emp.name}"></td>
+        <td th:text="${emp.contractType}"></td>
+        <td th:text="${emp.address}"></td>
+        <td th:text="${emp.department.deptName}"></td>
+        <td><a th:href="@{/employees/edit/{id}(id=${emp.id})}">Edit</a> | <a th:href="@{/employees/delete/{id}(id=${emp.id})}">Delete</a></td>
+    </tr>
+</table>
+</body>
+</html>
