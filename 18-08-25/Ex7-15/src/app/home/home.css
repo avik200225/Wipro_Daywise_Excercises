@@ -1,0 +1,21 @@
+.book-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 16px;
+}
+
+.book-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+.book-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}

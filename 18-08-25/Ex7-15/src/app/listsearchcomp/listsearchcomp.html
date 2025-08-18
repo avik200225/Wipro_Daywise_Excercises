@@ -1,0 +1,15 @@
+<div style="margin:20px; width:200px;">
+  <input type="text"
+         [(ngModel)]="searchText"
+         placeholder="Search..."
+         style="width:100%; margin-bottom:10px;" />
+
+  <select size="6" style="width:100%;">
+    @for (name of filteredNames; track name) {
+      <option>{{ name }}</option>
+    }
+    @empty {
+      <option disabled>No results found</option>
+    }
+  </select>
+</div>
