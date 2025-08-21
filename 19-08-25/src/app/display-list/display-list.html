@@ -1,0 +1,42 @@
+<!-- <div class="container mt-4">
+  <div class="row">
+    @for (fruit of fruits; track fruit.name) {
+      <div class="col-md-3">
+        <div class="card mb-4 shadow-sm">
+          <img [src]="fruit.image" class="card-img-top" alt="{{ fruit.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ fruit.name }}</h5>
+            <p class="card-text">{{ fruit.description }}</p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div> -->
+
+<!-- EX-6 -->
+
+<!-- <div class="card mb-4 shadow-sm">
+  <img [src]="fruit.image" class="card-img-top" alt="{{ fruit.name }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ fruit.name }}</h5>
+    <p class="card-text">{{ fruit.description }}</p>
+  </div>
+</div> -->
+
+
+<!-- EX-7 -->
+<div class="card mb-4 shadow-sm">
+  <img [src]="fruit.image" class="card-img-top" alt="{{ fruit.name }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ fruit.name }}</h5>
+    <p class="card-text">{{ fruit.description }}</p>
+    <button class="btn btn-danger btn-sm mt-2" (click)="onRemove()">Remove</button>
+  </div>
+</div>
+
+
+
+
+
+
