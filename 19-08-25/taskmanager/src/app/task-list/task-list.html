@@ -1,0 +1,26 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover text-center align-middle shadow-sm">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(task of tasks; track $index){
+      <tr>
+        <td>{{ task.id }}</td>
+        <td>{{ task.description }}</td>
+        <td>
+          {{ task.category }}
+        </td>
+        <td>
+          <button class="btn btn-sm btn-danger" (click)="deleteTask(task.id)">Delete</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

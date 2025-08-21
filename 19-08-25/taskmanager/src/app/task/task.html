@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <form class="p-3 border rounded bg-light shadow-sm">
+        <div class="mb-3">
+          <label for="task" class="form-label fw-bold">Task Description</label>
+          <input
+            type="text"
+            id="task"
+            name="task"
+            class="form-control"
+            placeholder="Enter the task description"
+            [(ngModel)]="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="category" class="form-label fw-bold">Select Task Category</label>
+          <select id="category" name="category" class="form-select" [(ngModel)]="category">
+            <option value="">--- Select Category ---</option>
+            <option value="Work">Work</option>
+            <option value="Study">Study</option>
+            <option value="Exercise">Exercise</option>
+            <option value="Cooking">Cooking</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-primary w-100" (click)="addTask()">Add Task</button>
+      </form>
+    </div>
+  </div>
+</div>
