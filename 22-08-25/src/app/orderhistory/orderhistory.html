@@ -1,0 +1,23 @@
+<div class="order-history">
+  <h2>Order History</h2>
+  <button (click)="backToList()">Back to Product List</button>
+
+  @if (isLoading) {
+    <div class="loading">Loading order history...</div>
+  } @else if (errorMessage) {
+    <div class="error">
+      <p>{{ errorMessage }}</p>
+      <button (click)="loadOrderHistory()">Try Again</button>
+    </div>
+  } @else if (orders.length === 0) {
+    <p>No orders found.</p>
+  } @else {
+    @for (order of orders; track order.id) {
+      <div class="order-card">
+        <p class="order-product">Product: {{ order.productName }}</p>
+        <p class="order-quantity">Quantity: {{ order.quantity }}</p>
+        <p class="order-date">Order Date: {{ order.orderDate | date:'medium' }}</p>
+      </div>
+    }
+  }
+</div>

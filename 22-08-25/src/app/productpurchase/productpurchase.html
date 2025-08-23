@@ -1,0 +1,30 @@
+
+   <h2>Purchase Product</h2>
+   <div class="purchase-form">
+     @if (isLoading) {
+       <div class="loading">Loading products...</div>
+     } @else if (errorMessage) {
+       <div class="error">
+         <p>{{ errorMessage }}</p>
+         <button (click)="loadProducts()">Try Again</button>
+       </div>
+     } @else {
+       <form>
+         <div>
+           <label for="product">Select Product:</label>
+           <select id="product" name="product" [(ngModel)]="selectedProductId" (ngModelChange)="onProductChange()" required>
+             <option value="" disabled>Select a product</option>
+             @for (product of products; track product.id) {
+               <option [value]="product.id">{{ product.name }} (Available: {{ product.quantity }})</option>
+             }
+           </select>
+         </div>
+         <div>
+           <label for="quantity">Quantity:</label>
+           <input id="quantity" name="quantity" [(ngModel)]="quantity" type="number" min="1" [max]="maxQuantity" required>
+         </div>
+         <button type="button" (click)="placeOrder()">Place Order</button>
+       </form>
+       <a routerLink="/productlist">Back to Product List</a>
+     }
+   </div>

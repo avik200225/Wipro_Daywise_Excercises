@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Laptop",
+      "category": "Electronics",
+      "price": 1500
+    },
+    {
+      "id": "2",
+      "name": "Phone",
+      "category": "Electronics",
+      "price": 800
+    },
+    {
+      "id": "df2d",
+      "name": "Puma",
+      "category": "Shoes",
+      "price": 999
+    },
+    {
+      "id": "7ecb",
+      "name": "Frock",
+      "category": "Clothing",
+      "price": 999
+    }
+  ]
+}
