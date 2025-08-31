@@ -1,15 +1,41 @@
-<div class="login-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="onLogin()">
-    <label>Email
-      <input type="email" [(ngModel)]="email" name="email" required />
-    </label>
-    <label>Password
-      <input type="password" [(ngModel)]="password" name="password" required />
-    </label>
-    <button type="submit" [disabled]="loading">Login</button>
-  </form>
-  <div *ngIf="error" class="error">{{error}}</div>
-  <button class="link" (click)="goToRegistration()">Register as New User</button>
+<div class="login-shell">
+  <div class="login-container" role="region" aria-labelledby="loginTitle">
+
+    <div class="alert error" *ngIf="error" aria-live="polite">
+      {{ error }}
+    </div>
+
+    <h2 id="loginTitle">Login</h2>
+
+    <form (ngSubmit)="onLogin()" novalidate>
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+        placeholder="Enter Email"
+        autocomplete="username"
+      />
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        minlength="4"
+        placeholder="Enter Password"
+        autocomplete="current-password"
+      />
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Signing in…' : 'Login' }}
+      </button>
+    </form>
+
+    <button class="link" (click)="goToRegistration()">Register as New User</button>
+  </div>
 </div>
+
 

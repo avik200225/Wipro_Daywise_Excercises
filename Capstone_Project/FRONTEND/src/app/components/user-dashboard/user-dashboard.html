@@ -5,12 +5,16 @@
       <option>Category</option>
       <option>Price</option>
     </select>
+
     <input type="text" [(ngModel)]="searchTerm" placeholder="Search text" />
     <button>Search</button>
   </div>
+
   <div class="right">
+    <button class="btn-link" *ngIf="isLoggedIn" (click)="onLogout()">Logout</button>
+
     <div class="cart" (click)="goToCart()" style="cursor:pointer;">
-      Cart <span class="badge">{{cartCount}}</span>
+      Cart <span class="badge">{{ cartCount }}</span>
     </div>
   </div>
 </div>

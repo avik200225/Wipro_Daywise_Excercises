@@ -19,7 +19,8 @@ export class UserDashboard implements OnInit {
   searchTerm = '';
   cartCount = 0;
 
- 
+  isLoggedIn = !!(localStorage.getItem('userId') || localStorage.getItem('username') || localStorage.getItem('jwtToken'));
+
   private allProducts: Product[] = [];
   private chunk = 8;
   private loaded = 0;
@@ -32,8 +33,15 @@ export class UserDashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cartCount = this.cart.getCount();  
+    this.cartCount = this.cart.getCount();
     this.load();
+  }
+
+  onLogout() {
+    const uid = localStorage.getItem('userId');
+    localStorage.clear();           
+    this.isLoggedIn = false;      
+    this.router.navigate(['/login']);
   }
 
   load() {
@@ -73,14 +81,12 @@ export class UserDashboard implements OnInit {
     );
   }
 
-
   addToCart(p: Product) {
-    this.cart.add(p, 1);              
-    this.cartCount = this.cart.getCount(); 
+    this.cart.add(p, 1);
+    this.cartCount = this.cart.getCount();
   }
 
   goToCart() {
     this.router.navigate(['/cart']);
   }
 }
-

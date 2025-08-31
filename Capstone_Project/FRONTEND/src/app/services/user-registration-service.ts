@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserInterface } from '../interface/user-interface';
@@ -9,11 +9,7 @@ export class UserRegistrationnService {
 
   constructor(private http: HttpClient) {}
 
-  registerUser(user: UserInterface): Observable<string> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(`${this.baseUrl}/saveuser`, user, {
-      headers,
-      responseType: 'text',
-    });
+  registerUser(payload: UserInterface): Observable<string> {
+    return this.http.post(`${this.baseUrl}/saveuser`, payload, { responseType: 'text' });
   }
 }
