@@ -1,0 +1,48 @@
+package com.wipro.userms.entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+@Entity
+@Data
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @NotBlank(message = "EMAIL IS REQUIRED")
+    @Email(message = "INVALID EMAIL FORMAT")
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "user_id")
+    private String userId; 
+
+    @Column(name = "pass_word")
+    private String passWord;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "user_type")
+    private int userType; // 0 stands for admin, 1 stands for user
+
+    @Column(name = "is_logged_in")
+    private boolean isLoggedIn;
+    
+    @Column(name = "salt")
+    private String salt;
+}
