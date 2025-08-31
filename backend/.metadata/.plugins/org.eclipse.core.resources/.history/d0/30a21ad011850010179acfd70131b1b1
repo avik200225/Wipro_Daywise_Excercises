@@ -1,9 +1,0 @@
-package com.wipro.userms.dto;
-
-import lombok.Data;
-
-public class Token {
-    private String token;
-    public Token(String token) { this.token = token; }
-    public String getToken() { return token; }
-}

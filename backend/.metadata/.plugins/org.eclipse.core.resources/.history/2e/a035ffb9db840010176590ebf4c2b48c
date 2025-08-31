@@ -1,5 +1,0 @@
-package com.wipro.userms.dto;
-
-public class JwtResponse {
-
-}

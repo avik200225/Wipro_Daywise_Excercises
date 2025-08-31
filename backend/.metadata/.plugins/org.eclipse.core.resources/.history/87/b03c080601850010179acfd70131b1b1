@@ -1,6 +1,0 @@
-package com.wipro.userms.util;
-
-public class AppConstant {
-    public static final String SECRET_KEY = "d3No4uat7HEgU6RHjJ902G+gTj3+qHNZZ/CN6BUeCa4cKFSkp1AGFXH7ODj3A+fPDf1WQB2x6Yknr6VFh5ySyw==";
-    public static final long EXPIRATION_TIME = 1000 * 60 * 60;
-}

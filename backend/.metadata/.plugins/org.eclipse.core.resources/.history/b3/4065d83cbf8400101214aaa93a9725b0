@@ -1,8 +1,0 @@
-package com.wipro.productms.exception;
-
-package com.wipro.productms.exception;
-
-import java.time.Instant;
-
-public record ApiError(Instant timestamp, int status, String error, String path) { }
-

@@ -1,5 +1,0 @@
-package com.wipro.productms.config;
-
-public class JWTAuthorizationFilter {
-
-}
