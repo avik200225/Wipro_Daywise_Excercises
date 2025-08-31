@@ -1,0 +1,31 @@
+//package com.wipro.productms.repo;
+//import com.wipro.productms.entity.Product;
+//import java.util.List;
+//import org.springframework.stereotype.Repository;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//
+//@Repository
+//public interface ProductRepo extends JpaRepository<Product, Integer> {
+//   List<Product> findByProductName(String productName);
+//	
+//	
+//	
+//}
+package com.wipro.productms.repo;
+
+import com.wipro.productms.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.math.BigDecimal;
+
+public interface ProductRepo extends JpaRepository<Product, Long> {
+    Page<Product> findByProductNameContainingIgnoreCase(String q, Pageable pageable);
+    Page<Product> findByProductCatContainingIgnoreCase(String q, Pageable pageable);
+    Page<Product> findByProductDescContainingIgnoreCase(String q, Pageable pageable);
+    Page<Product> findByMakeContainingIgnoreCase(String q, Pageable pageable);
+    Page<Product> findByProductPrice(BigDecimal price, Pageable pageable);
+}
+

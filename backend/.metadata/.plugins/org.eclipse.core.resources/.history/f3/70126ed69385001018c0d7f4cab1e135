@@ -1,0 +1,85 @@
+package com.wipro.productms.entity;
+
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+
+//@Entity
+//@Data
+//public class Product {
+    
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int productId;
+//    
+//    @NotBlank
+//    private String productName;  
+//    
+//    @NotBlank
+//    private String make;
+//    
+//    @NotBlank
+//    private String productCat;
+//    
+//    @NotBlank
+//    private String productDesc;
+//     
+//    @NotNull
+//    private Integer productAvailableQty; 
+//    
+//    @NotNull
+//    private Double productPrice;
+//    
+//    @NotBlank
+//    private String productImgUrl;
+//    
+//    private LocalDate dateOfManufacture;
+//}
+
+@Entity
+@Table(name = "products")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long productId;
+
+    @NotBlank
+    @Column(nullable = false, length = 120)
+    private String productName;
+
+    @NotBlank
+    @Column(nullable = false, length = 80)
+    private String productCat;
+
+    @Column(length = 1000)
+    private String productDesc;
+
+    @Column(length = 80)
+    private String make;
+
+    @Min(0)
+    private Integer productAvailableQty;
+
+    @DecimalMin(value = "0.0", inclusive = true)
+    @Column(precision = 12, scale = 2)
+    private BigDecimal productPrice;
+
+    @Column(length = 500)
+    private String productImgUrl;
+
+    private LocalDate dateOfManufacture;
+    
+}

@@ -1,0 +1,5 @@
+package com.wipro.productms.exception;
+
+public class GlobalExceptionHandler {
+
+}

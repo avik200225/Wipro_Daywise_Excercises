@@ -1,0 +1,119 @@
+package com.wipro.userms.service.impl;
+
+import com.wipro.userms.service.UserService;
+import com.wipro.userms.util.AppConstant;
+import com.wipro.userms.util.EncryptUtil;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.stereotype.Service;
+import com.wipro.userms.dto.Token;
+import com.wipro.userms.entity.User;
+import com.wipro.userms.repo.UserRepo;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Override
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+    @Override
+    public User findById(int id) {
+        Optional<User> opt = userRepo.findById(id);
+        return opt.orElse(null);
+    }
+
+    public String registerUser(User user) {
+        if(userRepo.findByEmail(user.getEmail()) != null) {
+            return "Email already exists";
+        }
+        user.setUserType(1);
+        save(user);
+        return "User registered successfully";
+    }
+
+    public String registerAdmin(User user) {
+        user.setUserType(0);
+        save(user);
+        return "Admin registered successfully";
+    }
+
+    @Override
+    public void save(User user) {
+        if (user.getSalt() == null || user.getSalt().isEmpty()) {
+            String salt = org.springframework.security.crypto.bcrypt.BCrypt.gensalt();
+            user.setSalt(salt); 
+        }
+
+        user.setPassWord(EncryptUtil.getEncryptedPassword(user.getPassWord(), user.getSalt()));
+        user.setUserId(user.getEmail()); //setting userid as email
+        userRepo.save(user);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        userRepo.deleteById(id);
+    }
+   
+    @Override
+    public Token login(User user) {
+        User dbUser = userRepo.findByEmail(user.getEmail());
+        if (dbUser != null) {
+            String encrypted = EncryptUtil.getEncryptedPassword(user.getPassWord(), dbUser.getSalt());
+            User matched = userRepo.findByEmailAndPassWord(user.getEmail(), encrypted);
+            if (matched != null) {
+                matched.setLoggedIn(true);
+                userRepo.save(matched);
+                String jwt = "Bearer " + generateJWT(matched.getId(), matched.getUserType());
+                Token token = new Token();
+                token.setToken(jwt);
+                return token;
+            }
+        }
+        return null;
+    }
+
+    public boolean logout(int userId) {
+        Optional<User> userOpt = userRepo.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setLoggedIn(false);
+            userRepo.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    
+    private String generateJWT(int userId, int userType) {
+        Key key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(AppConstant.SECRET));
+
+        String role = (userType == 0) ? "ROLE_ADMIN" : "ROLE_USER"; 
+        List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(role);
+
+        return Jwts.builder()
+                .setId("jwtExample")
+                .setSubject(String.valueOf(userId))
+                .claim("authorities", authorities.stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 600000)) // 10 min
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+}

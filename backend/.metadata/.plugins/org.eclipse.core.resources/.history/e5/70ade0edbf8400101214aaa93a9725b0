@@ -1,0 +1,5 @@
+package com.wipro.productms.dto;
+
+public class ProductRequest {
+
+}

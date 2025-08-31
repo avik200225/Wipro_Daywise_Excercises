@@ -1,0 +1,12 @@
+package com.wipro.productms.repo;
+import com.wipro.productms.entity.Product;
+import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+@Repository
+public interface ProductRepo extends JpaRepository<Product, Integer> {
+    List<Product> findByProductName(String productName);
+	
+}

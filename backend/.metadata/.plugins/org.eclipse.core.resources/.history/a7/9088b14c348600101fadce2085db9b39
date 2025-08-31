@@ -1,0 +1,9 @@
+package com.wipro.orderms.dto;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class OrderCreateRequest {
+  @NotNull private Integer userId;
+}

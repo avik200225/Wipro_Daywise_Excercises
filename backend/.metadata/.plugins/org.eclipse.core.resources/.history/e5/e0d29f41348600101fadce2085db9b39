@@ -1,0 +1,35 @@
+package com.wipro.orderms.controller;
+
+import com.wipro.orderms.dto.CartAddRequest;
+import com.wipro.orderms.dto.CartUpdateRequest;
+import com.wipro.orderms.entity.Cart;
+import com.wipro.orderms.service.CartService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/cart")
+@RequiredArgsConstructor
+public class CartController {
+
+  private final CartService svc;
+
+  // 1) Add Product to Cart: /cart/addProd (POST)
+  @PostMapping("/addProd")
+  public Cart add(@Valid @RequestBody CartAddRequest req) { return svc.add(req); }
+
+  // 2) Delete product from Cart: /cart/deleteProd/{itemid} (DELETE)
+  @DeleteMapping("/deleteProd/{itemid}")
+  public Cart delete(@PathVariable("itemid") Integer productId, @RequestParam Integer userId) {
+    return svc.delete(userId, productId);
+  }
+
+  // 3) Change Qty: /cart/update (PUT)
+  @PutMapping("/update")
+  public Cart update(@Valid @RequestBody CartUpdateRequest req) { return svc.update(req); }
+
+  // 4) View cart: /cart/{userId} (GET)
+  @GetMapping("/{userId}")
+  public Cart view(@PathVariable Integer userId) { return svc.view(userId); }
+}

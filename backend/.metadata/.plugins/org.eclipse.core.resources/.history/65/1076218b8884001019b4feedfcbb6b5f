@@ -1,0 +1,51 @@
+package com.wipro.productms.controller;
+
+import com.wipro.productms.dto.ProductRequest;
+import com.wipro.productms.entity.Product;
+import com.wipro.productms.service.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/product")
+@CrossOrigin
+public class ProductController {
+
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
+
+    // 1. Create product
+    @PostMapping
+    public Product create(@Valid @RequestBody ProductRequest req) {
+        return service.create(req);
+    }
+
+    // 2. Update product
+    @PutMapping
+    public Product update(@Valid @RequestBody ProductRequest req) {
+        return service.update(req);
+    }
+
+    // 3. Delete product
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
+    }
+
+    // 4. List products
+    @GetMapping
+    public List<Product> list() {
+        return service.list();
+    }
+
+    // 5. Get product by id
+    @GetMapping("/{id}")
+    public Product get(@PathVariable Integer id) {
+        return service.get(id);
+    }
+}

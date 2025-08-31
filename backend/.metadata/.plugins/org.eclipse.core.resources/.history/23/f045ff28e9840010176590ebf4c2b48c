@@ -1,0 +1,77 @@
+package com.wipro.userms.service.impl;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.wipro.userms.entity.User;
+import com.wipro.userms.repo.UserRepo;
+import com.wipro.userms.service.UserService;
+import com.wipro.userms.util.JwtUtil;
+
+@Service
+public class UserServiceImpl implements UserService{
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    public User registerUser(User user) {
+        user.setPassWord(passwordEncoder.encode(user.getPassWord()));
+        return userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(int id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(int id) {
+    	if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public String login(String userId, String password) {
+        Optional<User> optionalUser = userRepository.findByUserId(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (passwordEncoder.matches(password, user.getPassWord())) {
+                user.setLoggedIn(true);
+                userRepository.save(user);
+                return jwtUtil.generateToken(user.getUserId(), user.getUserType());
+            } else {
+                throw new RuntimeException("Invalid password");
+            }
+        }
+        throw new RuntimeException("User not found");
+    }
+
+    @Override
+    public void logout(String userId) {
+        Optional<User> optionalUser = userRepository.findByUserId(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setLoggedIn(false);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+}

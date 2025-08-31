@@ -1,0 +1,12 @@
+package com.wipro.orderms.service;
+
+import com.wipro.orderms.dto.CartAddRequest;
+import com.wipro.orderms.dto.CartUpdateRequest;
+import com.wipro.orderms.entity.Cart;
+
+public interface CartService {
+  Cart view(Integer userId);
+  Cart add(CartAddRequest req);
+  Cart update(CartUpdateRequest req);
+  Cart delete(Integer userId, Integer productId);
+}

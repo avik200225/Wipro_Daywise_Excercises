@@ -1,0 +1,196 @@
+//package com.wipro.productms.service.impl;
+//import com.wipro.productms.entity.Product;
+//import com.wipro.productms.productrepo.ProductRepo;
+//import com.wipro.productms.service.ProductService;
+//
+//import jakarta.persistence.EntityNotFoundException;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.domain.Page;
+//import org.springframework.stereotype.Service;
+//
+//import java.awt.print.Pageable;
+//import java.math.BigDecimal;
+//import java.util.List;
+//import java.util.Optional;
+//
+//@Service
+//public class ProductServiceImpl implements ProductService {
+
+//    @Autowired
+//    private ProductRepo productRepo;
+//
+//    @Override
+//    public Product save(Product product) {
+//        return productRepo.save(product);
+//    }
+//
+//    @Override
+//    public List<Product> findAll() {
+//        return productRepo.findAll();
+//    }
+//
+//    @Override
+//    public Product findById(int productId) {
+//        Optional<Product> optionalProduct = productRepo.findById(productId);
+//        return optionalProduct.orElse(null);
+//    }
+//
+//    @Override
+//    public List<Product> findByProductName(String productName) {
+//        return productRepo.findByProductName(productName);
+//    }
+//
+//    @Override
+//    public void deleteById(int productId) {
+//        productRepo.deleteById(productId);
+//    }
+//
+//    @Override
+//    public Product updateProduct(int productId, Product updatedProduct) {
+//        Optional<Product> optionalProduct = productRepo.findById(productId);
+//
+//        if (optionalProduct.isPresent()) {
+//            Product existingProduct = optionalProduct.get();
+//            
+//            // Update only the fields you want to allow
+//            existingProduct.setProductName(updatedProduct.getProductName());
+//            existingProduct.setProductDesc(updatedProduct.getProductDesc());
+//            existingProduct.setProductCat(updatedProduct.getProductCat());
+//            existingProduct.setMake(updatedProduct.getMake());
+//            existingProduct.setProductAvailableQty(updatedProduct.getProductAvailableQty());
+//            existingProduct.setProductPrice(updatedProduct.getProductPrice());
+//            existingProduct.setProductImgUrl(updatedProduct.getProductImgUrl());
+//            existingProduct.setDateOfManufacture(updatedProduct.getDateOfManufacture());
+//            
+//            return productRepo.save(existingProduct);
+//        } else {
+//            return null; // or throw an exception if preferred
+//        }
+//    }
+	
+package com.wipro.productms.service.impl;
+
+import com.wipro.productms.entity.Product;
+import com.wipro.productms.repo.ProductRepo;
+import com.wipro.productms.service.ProductService;
+
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepo productrepo;
+
+    public ProductServiceImpl(ProductRepo productrepo) {
+        this.productrepo = productrepo;
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productrepo.findAll();
+    }
+
+    @Override
+    public Product findById(Long id) {
+        return productrepo.findById(id).orElseThrow(() ->
+            new EntityNotFoundException("Product not found: " + id));
+    }
+
+    @Override
+    public Product create(Product p) {
+        p.setProductId(null);
+        return productrepo.save(p);
+    }
+
+    @Override
+    public Product update(Long id, Product p) {
+        Product db = findById(id);
+        // copy only present fields (keeps it non-breaking)
+        if (p.getProductName() != null) db.setProductName(p.getProductName());
+        if (p.getProductCat() != null) db.setProductCat(p.getProductCat());
+        if (p.getProductDesc() != null) db.setProductDesc(p.getProductDesc());
+        if (p.getMake() != null) db.setMake(p.getMake());
+        if (p.getProductAvailableQty() != null) db.setProductAvailableQty(p.getProductAvailableQty());
+        if (p.getProductPrice() != null) db.setProductPrice(p.getProductPrice());
+        if (p.getProductImgUrl() != null) db.setProductImgUrl(p.getProductImgUrl());
+        if (p.getDateOfManufacture() != null) db.setDateOfManufacture(p.getDateOfManufacture());
+        return productrepo.save(db);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (!productrepo.existsById(id)) throw new EntityNotFoundException("Product not found: " + id);
+        productrepo.deleteById(id);
+    }
+
+//    @Override
+//    public Page<Product> search(String field, String query, Pageable pageable) {
+//        String f = (field == null ? "" : field.trim().toLowerCase());
+//        String q = (query == null ? "" : query.trim());
+//
+//        switch (f) {
+//            case "name":
+//                return productrepo.findByProductNameContainingIgnoreCase(q, pageable);
+//            case "category":
+//                return productrepo.findByProductCatContainingIgnoreCase(q, pageable);
+//            case "description":
+//                return productrepo.findByProductDescContainingIgnoreCase(q, pageable);
+//            case "make":
+//                return productrepo.findByMakeContainingIgnoreCase(q, pageable);
+//            case "price":
+//                try {
+//                    BigDecimal price = new BigDecimal(q);
+//                    return productrepo.findByProductPrice(price, pageable);
+//                } catch (NumberFormatException ex) {
+//                    // return empty page if price is not a number
+//                    return Page.empty(pageable);
+//                }
+//            default:
+//                // default: name
+//                return productrepo.findByProductNameContainingIgnoreCase(q, pageable);
+//        }
+//    }
+    
+    @Override
+    public Page<Product> search(String field, String query, org.springframework.data.domain.Pageable pageable) {
+        String f = (field == null ? "" : field.trim().toLowerCase());
+        String q = (query == null ? "" : query.trim());
+
+        // ✅ When no query provided, return all products (paged)
+        if (q.isEmpty()) {
+            return productrepo.findAll(pageable);
+        }
+
+        switch (f) {
+            case "name":
+                return productrepo.findByProductNameContainingIgnoreCase(q, pageable);
+            case "category":
+                return productrepo.findByProductCatContainingIgnoreCase(q, pageable);
+            case "description":
+                return productrepo.findByProductDescContainingIgnoreCase(q, pageable);
+            case "make":
+                return productrepo.findByMakeContainingIgnoreCase(q, pageable);
+            case "price":
+                try {
+                    java.math.BigDecimal price = new java.math.BigDecimal(q);
+                    return productrepo.findByProductPrice(price, pageable);
+                } catch (NumberFormatException ex) {
+                    // invalid price → empty page
+                    return org.springframework.data.domain.Page.empty(pageable);
+                }
+            default:
+                return productrepo.findByProductNameContainingIgnoreCase(q, pageable);
+        }
+    }
+
+}
+
+

@@ -1,0 +1,66 @@
+package com.wipro.productms.service.impl;
+
+import com.wipro.productms.dto.ProductRequest;
+import com.wipro.productms.entity.Product;
+import com.wipro.productms.exception.ResourceNotFoundException;
+import com.wipro.productms.repo.ProductRepo;
+import com.wipro.productms.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class ProductServiceImpl implements ProductService {
+
+    @Autowired
+    private ProductRepo repo;
+
+    @Override
+    public Product create(ProductRequest r) {
+        Product p = new Product();
+        copy(r, p);
+        return repo.save(p);
+    }
+
+    @Override
+    public Product update(ProductRequest r) {
+        if (r.id() == null) {
+            throw new IllegalArgumentException("Product id is required for update");
+        }
+        Product existing = repo.findById(r.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + r.id()));
+        copy(r, existing);
+        return repo.save(existing);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        if (!repo.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found: " + id);
+        }
+        repo.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Product> list() {
+        return repo.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Product get(Integer id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + id));
+    }
+
+    private void copy(ProductRequest r, Product p) {
+        p.setName(r.name());
+        p.setDescription(r.description());
+        p.setPrice(r.price());
+        p.setQuantity(r.quantity());
+    }
+}

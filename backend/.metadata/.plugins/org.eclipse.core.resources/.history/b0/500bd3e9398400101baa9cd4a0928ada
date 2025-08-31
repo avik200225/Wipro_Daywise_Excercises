@@ -1,0 +1,17 @@
+package com.wipro.productms.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import com.wipro.productms.entity.Product;
+
+public interface ProductService {
+
+    List<Product> findAll();
+
+    Optional<Product> findById(Integer id);
+
+    Product save(Product product);  // Used for create & update
+
+    void delete(Product product);   // Delete using Product object
+}
