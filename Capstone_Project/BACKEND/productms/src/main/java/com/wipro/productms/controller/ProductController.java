@@ -1,56 +1,3 @@
-//package com.wipro.productms.controller;
-//
-//import com.wipro.productms.entity.Product;
-//import com.wipro.productms.productservice.ProductService;
-//
-//import jakarta.validation.Valid;
-//
-//import org.springframework.web.bind.annotation.*;
-//
-//import org.springframework.data.domain.Pageable;
-//import java.util.List;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
-//
-//@RestController
-//@RequestMapping("/product")
-//public class ProductController {
-
-//    @Autowired
-//    private ProductService productService;
-//
-//    @GetMapping
-//    public List<Product> getAllProducts() {
-//        return productService.findAll();
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Product getProductById(@PathVariable int id) {
-//        return productService.findById(id);
-//    }
-//
-//    @GetMapping("/searchByName")
-//    public List<Product> getProductsByName(@RequestParam String name) {
-//        return productService.findByProductName(name);
-//    }
-//
-//    @PostMapping
-//    public String createProduct(@RequestBody Product product) {
-//        productService.save(product);
-//        return "PRODUCT SUCCESSFULLY CREATED";
-//    }
-//
-//    @PutMapping("/{id}")
-//    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
-//        return productService.updateProduct(id, product);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public String deleteProduct(@PathVariable int id) {
-//        productService.deleteById(id);
-//        return "PRODUCT SUCCESSFULLY DELETED";
-//    }
 package com.wipro.productms.controller;
 
 import com.wipro.productms.entity.Product;
@@ -80,32 +27,26 @@ public class ProductController {
         return productservice.findAll();
     }
 
-    // --- GET BY ID (optional) ---
     @GetMapping("/{id}")
     public Product getById(@PathVariable Long id) {
         return productservice.findById(id);
     }
 
-    // --- CREATE (used by your frontend) ---
     @PostMapping
     public Product create(@Valid @RequestBody Product p) {
         return productservice.create(p);
     }
 
-    // --- UPDATE (used by your frontend) ---
     @PutMapping("/{id}")
     public Product update(@PathVariable Long id, @RequestBody Product p) {
         return productservice.update(id, p);
     }
 
-    // --- DELETE (used by your frontend) ---
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         productservice.delete(id);
     }
 
-    // --- SEARCH with pagination (matches sketch) ---
-    // /product/search?field=category&q=Electronics&page=0&size=10
     @GetMapping("/search")
     public Page<Product> search(
             @RequestParam(defaultValue = "name") String field,

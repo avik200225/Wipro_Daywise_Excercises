@@ -8,10 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-//import java.math.BigDecimal;
 import java.util.List;
-//import java.util.Objects;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -84,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
                     java.math.BigDecimal price = new java.math.BigDecimal(q);
                     return productrepo.findByProductPrice(price, pageable);
                 } catch (NumberFormatException ex) {
-                    // invalid price → empty page
+
                     return org.springframework.data.domain.Page.empty(pageable);
                 }
             default:
