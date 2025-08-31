@@ -45,4 +45,8 @@ public class UserController {
     public String testEndpoint() {
         return "JWT AUTHENTICATION IS WORKING PROPERLY";
     }
+    
+   
 }
+
+

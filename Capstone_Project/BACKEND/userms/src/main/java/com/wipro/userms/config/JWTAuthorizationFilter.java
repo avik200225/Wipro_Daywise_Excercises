@@ -36,7 +36,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         System.out.println("JWT Filter - Request URI: " + uri);
         System.out.println("JWT Filter - Servlet Path: " + servletPath);
 
-        // skip login, register, logout
         if (uri.endsWith("/login") || uri.endsWith("/saveuser") || uri.endsWith("/saveadmin") || uri.contains("/logout")) {
             System.out.println("JWT Filter - Skipping JWT check for this endpoint.");
             chain.doFilter(request, response);

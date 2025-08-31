@@ -17,7 +17,7 @@ public class WebSecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
             		.requestMatchers("/user/login","/user/logout/**","/user/saveuser","/user/saveadmin").permitAll()
-                .anyRequest().authenticated() // all other endpoints need JWT
+                .anyRequest().authenticated()
             )
             .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
