@@ -12,22 +12,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class WebSecurityConfig {
 
-private final JWTAuthorizationFilter jwtFilter;
-public WebSecurityConfig(JWTAuthorizationFilter jwtFilter) { this.jwtFilter = jwtFilter; }
+    private final JWTAuthorizationFilter jwtFilter;
 
-@Bean
-SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
- http.csrf(csrf -> csrf.disable())
-     .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-     .authorizeHttpRequests(auth -> auth
-         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-         .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-         .requestMatchers(HttpMethod.POST, "/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
-         .requestMatchers(HttpMethod.PUT,  "/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
-         .requestMatchers(HttpMethod.DELETE,"/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
-         .anyRequest().authenticated())
-     .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
- return http.build();
-}
-}
+    public WebSecurityConfig(JWTAuthorizationFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
 
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+           .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+           .authorizeHttpRequests(auth -> auth
+               .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+               .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+               .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
+               .requestMatchers(HttpMethod.POST, "/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
+               .requestMatchers(HttpMethod.PUT,  "/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
+               .requestMatchers(HttpMethod.DELETE,"/product/**").hasAnyAuthority("ROLE_ADMIN","ADMIN")
+               .anyRequest().authenticated()
+           )
+           .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+}
