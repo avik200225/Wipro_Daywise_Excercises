@@ -14,11 +14,22 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/user/login","/user/logout/**","/user/saveuser","/user/saveadmin").permitAll()
+                .requestMatchers(
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html"
+                ).permitAll()
+                .requestMatchers(
+                    "/user/login",
+                    "/user/logout/**",
+                    "/user/saveuser",
+                    "/user/saveadmin"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
+
             .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
