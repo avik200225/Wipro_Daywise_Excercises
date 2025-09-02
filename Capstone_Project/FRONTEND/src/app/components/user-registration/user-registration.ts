@@ -40,12 +40,12 @@ export class UserRegistration {
       next: (msg: string) => {
         this.loading = false;
 
-        // Only show success when backend explicitly says so
+
         if (typeof msg === 'string' && msg.toUpperCase().includes('SUCCESS')) {
           alert('User registered successfully');
-          this.router.navigate(['/demo']); // or your login route
+          this.router.navigate(['/demo']); 
         } else {
-          // Defensive: backend responded 200 but unexpected body
+
           alert(msg || 'Registration completed.');
         }
       },
@@ -55,7 +55,7 @@ export class UserRegistration {
         if (err?.status === 409) {
           alert('Email already exists. Please login or use a different email.');
         } else {
-          alert('Registration failed. Please try again.');
+          alert('Registration failed (USER ALREADY REGISTERED). Please try again.');
         }
       }
     });
