@@ -15,78 +15,50 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-  private static final String HEADER="Authorization";
-  private static final String PREFIX="Bearer ";
-
-  private final Key key;
-
-  public JWTAuthorizationFilter(@Value("${app.jwt.secret}") String secret) {
-    byte[] decoded = Base64.getDecoder().decode(secret.trim());
-    this.key = Keys.hmacShaKeyFor(decoded);
-  }
+  @Value("${app.jwt.secret}")
+  private String secret;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
 
-    String header = req.getHeader(HEADER);
-    if (header==null || !header.startsWith(PREFIX)) { chain.doFilter(req,res); return; }
-
-    try {
-      String token = header.substring(PREFIX.length()).trim();
-      Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-      String subject = claims.getSubject();
-      var authorities = extractAuthorities(claims);
-      if (subject != null) {
-        SecurityContextHolder.getContext().setAuthentication(
-            new UsernamePasswordAuthenticationToken(subject, null, authorities));
-      }
-    } catch (Exception e) {
-      SecurityContextHolder.clearContext();
-      res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    String header = request.getHeader("Authorization");
+    if (header == null || !header.startsWith("Bearer ")) {
+      chain.doFilter(request, response);
       return;
     }
-    chain.doFilter(req,res);
-  }
 
-  @SuppressWarnings("unchecked")
-  private Collection<SimpleGrantedAuthority> extractAuthorities(Claims claims) {
-    Object raw = claims.get("authorities");
-    if (raw == null) raw = claims.get("roles");
-    if (raw == null) raw = claims.get("role");
+    try {
+      String token = header.substring(7);
+      Key key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
+      Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
-    // Handles both List<String> and List<Map<String,String>> ({"authority":"ROLE_X"})
-    if (raw instanceof List<?> list) {
-      return list.stream()
-          .map(Object.class::cast)
-          .map(elem -> {
-            if (elem instanceof Map<?, ?> m) {
-              Object a = m.get("authority");
-              return (a == null) ? null : a.toString();
-            }
-            return elem.toString();
-          })
-          .filter(Objects::nonNull)
-          .filter(s -> !s.isBlank())
-          .map(SimpleGrantedAuthority::new)
-          .collect(Collectors.toList());
+      Object val = claims.get("authorities");
+      if (val == null) val = claims.get("roles");
+      if (val == null) val = claims.get("role");
+
+      List<SimpleGrantedAuthority> authorities = switch (val) {
+        case List<?> list -> list.stream().map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        case String s -> List.of(new SimpleGrantedAuthority(s));
+        default -> List.of();
+      };
+
+      UsernamePasswordAuthenticationToken auth =
+          new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities);
+      SecurityContextHolder.getContext().setAuthentication(auth);
+    } catch (Exception e) {
+      SecurityContextHolder.clearContext();
     }
-
-    if (raw instanceof String s) {
-      return List.of(new SimpleGrantedAuthority(s));
-    }
-
-    return List.of();
+    chain.doFilter(request, response);
   }
 }
+
+

@@ -1,12 +1,13 @@
-//package com.wipro.orderms.service;
-//
-//import com.wipro.orderms.dto.AddOrUpdateReq;
-//import com.wipro.orderms.dto.CartResponse;
-//
-//public interface CartService {
-//	CartResponse addProduct(AddOrUpdateReq req);
-//	CartResponse updateQuantity(AddOrUpdateReq req);
-//	void deleteProduct(Integer userId, Long productId); // Long!
-//	CartResponse getCart(Integer userId);
-//}
+package com.wipro.orderms.service;
+
+import com.wipro.orderms.dto.CartAddRequest;
+import com.wipro.orderms.dto.CartUpdateRequest;
+import com.wipro.orderms.entity.Cart;
+
+public interface CartService {
+  Cart view(Integer userId);
+  Cart add(CartAddRequest req);
+  Cart update(CartUpdateRequest req);
+  Cart delete(Integer userId, Integer productId);
+}
 
