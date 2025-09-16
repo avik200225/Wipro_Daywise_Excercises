@@ -15,69 +15,42 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-  private static final String HEADER = "Authorization";
-  private static final String PREFIX  = "Bearer ";
-
-  private final Key key;
-
-  public JWTAuthorizationFilter(@Value("${app.jwt.secret}") String secret) {
-    byte[] decoded = Base64.getDecoder().decode(secret.trim());
-    this.key = Keys.hmacShaKeyFor(decoded);
-  }
+  @Value("${app.jwt.secret}")
+  private String secret;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
 
-    String header = req.getHeader(HEADER);
-    if (header == null || !header.startsWith(PREFIX)) {
-      chain.doFilter(req, res);
+    String h = request.getHeader("Authorization");
+    if (h == null || !h.startsWith("Bearer ")) {
+      chain.doFilter(request, response);
       return;
     }
-
     try {
-      String token = header.substring(PREFIX.length()).trim();
-      Claims claims = Jwts.parserBuilder().setSigningKey(key).build()
-          .parseClaimsJws(token).getBody();
+      String token = h.substring(7);
+      Key key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
+      Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
-      String subject = claims.getSubject();
-      Collection<SimpleGrantedAuthority> authorities = extractAuthorities(claims);
-
-      if (subject != null) {
-        SecurityContextHolder.getContext().setAuthentication(
-            new UsernamePasswordAuthenticationToken(subject, null, authorities)
-        );
+      Object rolesObj = claims.get("authorities");
+      List<SimpleGrantedAuthority> auths = new ArrayList<>();
+      if (rolesObj instanceof Collection<?> col) {
+        for (Object o : col) auths.add(new SimpleGrantedAuthority(o.toString()));
+      } else if (rolesObj instanceof String s) {
+        auths.add(new SimpleGrantedAuthority(s));
       }
+      SecurityContextHolder.getContext().setAuthentication(
+          new UsernamePasswordAuthenticationToken(claims.getSubject(), null, auths));
     } catch (Exception e) {
       SecurityContextHolder.clearContext();
-      res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      return;
     }
-    chain.doFilter(req, res);
-  }
-
-  @SuppressWarnings("unchecked")
-  private Collection<SimpleGrantedAuthority> extractAuthorities(Claims claims) {
-    Object val = claims.get("authorities");  
-    if (val == null) val = claims.get("roles");
-    if (val == null) val = claims.get("role");
-
-    if (val instanceof List<?> list) {
-      return list.stream().map(String::valueOf).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
-    if (val instanceof String s) {
-      return List.of(new SimpleGrantedAuthority(s));
-    }
-    return List.of();
+    chain.doFilter(request, response);
   }
 }
+
