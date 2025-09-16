@@ -1,0 +1,45 @@
+.title {
+  margin: 16px 0 20px;
+  text-align: center;
+}
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+thead th {
+  text-align: left;
+  color: #555;
+  font-weight: 600;
+}
+tbody tr {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+tbody td {
+  padding: 12px 14px;
+  vertical-align: top;
+}
+.prod {
+  margin-bottom: 4px;
+}
+.muted {
+  color: #777;
+}
+.btn {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-cancel {
+  background: #ff7a1a;
+  color: #fff;
+}
+.btn-cancel:hover {
+  filter: brightness(0.95);
+}
+.error {
+  color: #b00020;
+  text-align: center;
+}

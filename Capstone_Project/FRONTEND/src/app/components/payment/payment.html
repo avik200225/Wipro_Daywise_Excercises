@@ -1,0 +1,18 @@
+<h2 class="title">Payment Page</h2>
+
+<div class="card" *ngIf="cart as c; else loading">
+  <div class="lines">
+    <div class="line" *ngFor="let item of (c.productQuantityMap || c.prodDetails) | keyvalue">
+      <div class="name">Product #{{ item.key }}</div>
+      <div class="muted">Qty: {{ item.value }}</div>
+    </div>
+  </div>
+
+  <div class="total">Total: ₹{{ (c.totalPrice || 0) | number : '1.0-0' }}</div>
+
+  <button class="btn btn-success" (click)="payNow()">Pay Now</button>
+</div>
+
+<ng-template #loading>
+  <div class="muted">Loading cart...</div>
+</ng-template>

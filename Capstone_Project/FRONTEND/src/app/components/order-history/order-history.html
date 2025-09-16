@@ -1,0 +1,29 @@
+<h2 class="title">Your Order History</h2>
+
+<div *ngIf="loading" class="muted">Loading...</div>
+<div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+<table *ngIf="!loading && !error" class="table">
+  <thead>
+    <tr>
+      <th>Products</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      <th style="width:120px;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let o of orders">
+      <td>
+        <div class="prod" *ngFor="let it of o.productQuantityMap | keyvalue">
+          Product #{{ it.key }} <span class="muted">x{{ it.value }}</span>
+        </div>
+      </td>
+      <td>₹{{ (o.totalPrice || 0) | number: '1.2-2' }}</td>
+      <td>{{ displayStatus(o.orderStatus) }}</td>
+      <td>
+        <button class="btn btn-cancel" *ngIf="canCancel(o.orderStatus)" (click)="cancel(o.orderId)">Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
